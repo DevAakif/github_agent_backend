@@ -6,6 +6,15 @@ import ballerina/url;
 configurable string clientId = ?;
 configurable string clientSecret = ?;
 
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"],
+        allowCredentials: false,
+        allowHeaders: ["*"],
+        exposeHeaders: ["*"]
+    }
+}
+
 service / on new http:Listener(9090) {
     function init() {
         io:println("Service has started on port 9090");
@@ -20,11 +29,13 @@ service / on new http:Listener(9090) {
     resource function get auth2(string code) returns json|error {
         io:println("Code: ", code);
         http:Client copilotAuthClient = check new ("https://github.com");
-        http:Response response = check copilotAuthClient->post(string `/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}&redirect_url=""`, "The auth2 endpoint is successful");
+        http:Response response = check copilotAuthClient->post(string `/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}`, "The auth2 endpoint is successful");
         string responseText = check response.getTextPayload();
         map<string> formDataMap = check getFormDataMap(responseText);
         io:println(formDataMap.get("access_token"));
-        return {"token": formDataMap.get("access_token")};
+        string accessToken = formDataMap.get("access_token");
+        json responseJson = {"token": accessToken};
+        return responseJson;
 
         // map<string> response = check copilotAuthClient->post(string `/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}`,"The auth2 endpoint is successful");
 
