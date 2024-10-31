@@ -46,9 +46,8 @@ service / on new http:Listener(9090) {
         // response.getFo
         // io:println("response data: ",body);
     }
-
-    resource function get hello() {
-        io:println("Hello World");
+    resource function get chat(string token, string prompt) {
+        io:println("Chat endpoint is triggered: ", token, " ", prompt);
     }
 }
 
