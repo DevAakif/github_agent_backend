@@ -47,11 +47,12 @@ service / on new http:Listener(9090) {
         // io:println("response data: ",body);
     }
     resource function get chat(string token, string prompt) returns json|error {
+
         http:Client chatClient = check new ("https://api.github.com", auth = {
         "token": token
         });
-        http:Response response = check chatClient->post("chat/completions", message = [prompt], headers = {
-            "Content-Type": "application/json"
+        http:Response response = check chatClient->/chat/completions.post(message = prompt, headers = {
+            "content-Type": "application/json"
         });
         io:print(response);
     }
