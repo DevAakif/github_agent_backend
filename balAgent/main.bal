@@ -51,7 +51,7 @@ service / on new http:Listener(9090) {
         http:Client chatClient = check new ("https://api.github.com", auth = {
         "token": token
         });
-        http:Response response = check chatClient->/chat/completions.post(message = prompt, headers = {
+        json response = check chatClient->/chat/completions.post(message = prompt, headers = {
             "content-Type": "application/json"
         });
         io:print(response);
