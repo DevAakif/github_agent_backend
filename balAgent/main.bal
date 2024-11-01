@@ -48,10 +48,12 @@ service / on new http:Listener(9090) {
     }
     resource function get chat(string token, string prompt) returns json|error {
 
-        http:Client chatClient = check new ("https://api.github.com", auth = {
-        "token": token
+        http:Client chatClient = check new ("https://api.githubcopilot.com", auth = {
+            "token": token
         });
-        json response = check chatClient->/chat/completions.post(message = prompt, headers = {
+        json response = check chatClient->/chat/completions.post(message = {
+            "prompt": prompt
+        }, headers = {
             "content-Type": "application/json"
         });
 
