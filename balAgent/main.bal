@@ -51,9 +51,7 @@ service / on new http:Listener(9090) {
         http:Client chatClient = check new ("https://api.githubcopilot.com", auth = {
             "token": token
         });
-        json response = check chatClient->/chat/completions.post(message = {
-            "prompt": prompt
-        }, headers = {
+        json response = check chatClient->/chat/completions.post(message = prompt, headers = {
             "content-Type": "application/json"
         });
 
