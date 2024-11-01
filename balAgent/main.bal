@@ -46,8 +46,14 @@ service / on new http:Listener(9090) {
         // response.getFo
         // io:println("response data: ",body);
     }
-    resource function get chat(string token, string prompt) {
-        io:println("Chat endpoint is triggered: ", token, " ", prompt);
+    resource function get chat(string token, string prompt) returns json|error {
+        http:Client chatClient = check new ("https://api.github.com", auth = {
+        "token": token
+        });
+        http:Response response = check chatClient->post("chat/completions", message = [prompt], headers = {
+            "Content-Type": "application/json"
+        });
+        io:print(response);
     }
 }
 
