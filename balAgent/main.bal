@@ -12,11 +12,10 @@ configurable string clientSecret = ?;
 
 @http:ServiceConfig {
     cors: {
-        allowOrigins: ["*"],
-        allowCredentials: false,
-        allowHeaders: ["*"],
-        exposeHeaders: ["*"],
-        allowMethods: ["*"]
+        allowOrigins: ["http://localhost:3000"],
+        allowCredentials: true,
+        //allowHeaders: ["authorization","content-type"],
+        allowMethods: ["POST","GET"]
     }
 }
 service / on new http:Listener(9090) {
