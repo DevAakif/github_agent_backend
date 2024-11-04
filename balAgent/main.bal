@@ -15,10 +15,10 @@ configurable string clientSecret = ?;
         allowOrigins: ["*"],
         allowCredentials: false,
         allowHeaders: ["*"],
-        exposeHeaders: ["*"]
+        exposeHeaders: ["*"],
+        allowMethods: ["*"]
     }
 }
-
 service / on new http:Listener(9090) {
     function init() {
         io:println("Service has started on port 9090");
