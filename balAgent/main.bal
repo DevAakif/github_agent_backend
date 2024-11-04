@@ -64,11 +64,15 @@ service / on new http:Listener(9090) {
         http:Client chatClient = check new ("https://api.githubcopilot.com", auth = {
             "token": token
         });
+        
         json response = check chatClient->/chat/completions.post({messages}, headers = {
             "content-Type": "application/json"
         });
 
-        io:println("Response: ", response);
+        json[] testResponse = check response.choices.ensureType();
+        string finalResponse =check testResponse[0].message.content.ensureType();
+        io:println("chat response: ", finalResponse);
+        return {"chat response": finalResponse}; 
     }
 }
 
