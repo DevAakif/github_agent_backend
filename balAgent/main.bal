@@ -72,7 +72,7 @@ service / on new http:Listener(9090) {
         json[] testResponse = check response.choices.ensureType();
         string finalResponse =check testResponse[0].message.content.ensureType();
         io:println("chat response: ", finalResponse);
-        return {"chat response": finalResponse}; 
+        return {"chatResponse": finalResponse}; 
     }
 }
 
