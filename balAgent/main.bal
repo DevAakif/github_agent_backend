@@ -3,6 +3,10 @@ import ballerina/io;
 import ballerina/lang.'string as strings;
 import ballerina/url;
 
+type RequestPayload record{
+        string prompt;
+};
+
 configurable string clientId = ?;
 configurable string clientSecret = ?;
 
@@ -46,7 +50,10 @@ service / on new http:Listener(9090) {
         // response.getFo
         // io:println("response data: ",body);
     }
-    resource function get chat(string token, string prompt) returns json|error {
+
+
+    
+    resource function post chat(@http:Header{name: "Authorization"} string accessToken, RequestPayload payloadBody) returns json|error {
 
         json[] messages = [
             {
@@ -55,14 +62,14 @@ service / on new http:Listener(9090) {
             },
             {
             role: "user",
-            content: prompt
+            content: payloadBody.prompt
             }
         ];
 
         io:println("Message:", messages);
 
         http:Client chatClient = check new ("https://api.githubcopilot.com", auth = {
-            "token": token
+            "token": accessToken
         });
         
         json response = check chatClient->/chat/completions.post({messages}, headers = {
