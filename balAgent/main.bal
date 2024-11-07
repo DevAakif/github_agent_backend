@@ -39,19 +39,8 @@ service / on new http:Listener(9090) {
         string accessToken = formDataMap.get("access_token");
         json responseJson = {"token": accessToken};
         return responseJson;
-
-        // map<string> response = check copilotAuthClient->post(string `/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}`,"The auth2 endpoint is successful");
-
-        // io:println("Auth2 endpoint is triggered: ",response.statusCode);
-        // string header = check response.getHeader("Content-type");
-        // string body = check response.getTextPayload();
-        // mime:Entity entity = check response.getEntity();
-        // response.getFo
-        // io:println("response data: ",body);
     }
 
-
-    
     resource function post chat(@http:Header{name: "Authorization"} string accessToken, RequestPayload payloadBody) returns json|error {
 
         json[] messages = [
